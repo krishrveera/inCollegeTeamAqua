@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home Page</title>
+</head>
+<body>
+  <h1>Welcome to inCollege</h1>
+  <h2>Success Story:</h2>
+  <p>{{ success_story }}</p>
+  <h2>Useful Links:</h2>
+  <ul>
+      <li><a href="{{ url_for('general') }}">General</a></li>
+      <li><a href="{{ url_for('browse') }}">Browse InCollege</a></li>
+      <li><a href="{{ url_for('businessSolutions') }}">Business Solutions</a></li>
+      <li><a href="{{ url_for('directories') }}">Directories</a></li>
+     
+  </ul>
+  <h2>In College Important Links</h2>
+    <ul>
+      <li><a href="{{ url_for('copyrightNotice') }}">A Copyright Notice</a></li>
+      <li><a href="{{ url_for('about2') }}">About </a></li>
+      <li><a href="{{ url_for('accessibility') }}">Accessibility </a></li>
+      <li><a href="{{ url_for('agreement') }}">User Agreement</a></li>
+      <li><a href="{{ url_for('privacyPolicy', username=username) }}">Privacy Policy</a></li>
+      <li><a href="{{ url_for('cookies') }}">Cookie Policy</a></li>
+      <li><a href="{{ url_for('copyrightPolicy') }}">Copyright Policy</a></li>
+      <li><a href="{{ url_for('brand') }}">Brand Policy Options</a></li>    
+    </ul>
+  <video controls width="400" height="300">
+      <source src="{{ url_for('static', filename='inCollegeVideo.mp4', _external=True) }}" type="video/mp4">
+
+  </video>
+</body>
+</html>

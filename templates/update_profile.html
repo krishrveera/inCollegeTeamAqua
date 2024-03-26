@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Profile</title>
+</head>
+<body>
+  <h1>Create Your Profile</h1>
+  <form action="{{ url_for('update_profile') }}" method="post">
+    <label for="title">Profile Title:</label><br>
+    <input type="text" id="title" name="title"><br>
+    <label for="major">Major:</label><br>
+    <input type="text" id="major" name="major"><br>
+    <label for="university">University Name:</label><br>
+    <input type="text" id="university" name="university"><br>
+    <label for="info">About Me:</label><br>
+    <textarea id="info" name="info"></textarea><br>
+    <label for="experience">Experience (separate lines for multiple entries):</label><br>
+    <textarea id="experience" name="experience"></textarea><br>
+    <label for="education">Education (at least one required, separate lines for multiple entries):</label><br>
+    <textarea id="education" name="education" required></textarea><br>
+    <input type="submit" value="Submit">
+  </form>
+  <a href="{{ url_for('index') }}">Return to Home</a>
+</body>
+</html>

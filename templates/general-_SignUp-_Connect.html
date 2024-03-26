@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Connect</title>
+</head>
+<body>
+    <h1>Connect</h1>
+    <form method="post">
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" name="first_name"><br><br>
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last_name" name="last_name"><br><br>
+        <label for="last_name">University:</label>
+        <input type="text" id="university" name="university"><br><br>
+        <label for="last_name">Major:</label>
+        <input type="text" id="major" name="major"><br><br>
+        <input type="submit" value="Connect">
+    </form>
+    {% if connection_result %}
+        <p>{{ connection_result }}</p>
+        <a href="{{ url_for('login') }}"><button>Login</button></a>
+        <a href="{{ url_for('signup') }}"><button>Sign Up</button></a>
+    {% endif %}
+  <a href="{{ url_for('sign_in_processing') }}">Previous Page</a>
+</body>
+</html>

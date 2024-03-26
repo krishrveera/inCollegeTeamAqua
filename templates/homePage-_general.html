@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>General Page</title>
+</head>
+<body>
+    <h1>Welcome to inCollege</h1>
+    <h2>Useful Links:</h2>
+    <ul>
+        <li><a href="{{ url_for('sign_in_processing') }}">Sign Up</a></li>
+        <li><a href="{{ url_for('help') }}">Help Center</a></li>
+        <li><a href="{{ url_for('about') }}">About</a></li>
+        <li><a href="{{ url_for('press') }}">Press</a></li>
+        <li><a href="{{ url_for('blog') }}">Blog</a></li>
+        <li><a href="{{ url_for('careers') }}">Careers</a></li>
+        <li><a href="{{ url_for('developers') }}">Developers</a></li>
+      <a href="{{ url_for('index') }}">Return to home</a>
+    </ul>
+</body>
+</html>

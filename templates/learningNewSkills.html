@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Learning New Skills</title>
+</head>
+<body>
+  <h1>Welcome, {{username }}</h1><h2>Select a skill to learn:</h2>
+  <form action="{{ url_for('skills', username=username) }}" method="post">
+    <input type="radio" id="python" name="skill" value="Python">
+    <label for="python">Python</label><br>
+    <input type="radio" id="java" name="skill" value="Java">
+    <label for="java">Java</label><br>
+    <input type="radio" id="cpp" name="skill" value="C++">
+    <label for="cpp">C++</label><br>
+    <input type="radio" id="ml" name="skill" value="Machine Learning">
+    <label for="ml">Machine Learning</label><br>
+    <input type="radio" id="hw" name="skill" value="Hardware Accelerators">
+    <label for="hw">Hardware Accelerators</label><br><br>
+    <input type="submit" value="Submit">
+</form>
+  <br>
+  <form action="{{ url_for('post_menu', username=username) }}" method="get">
+    <input type="submit" value="Return">
+  </form>
+</body>
+</html>

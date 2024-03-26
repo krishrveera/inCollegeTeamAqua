@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Post Menu</title>
+</head>
+<body>
+  <h1>Welcome, {{username }}</h1>
+  <h2>Select an option</h2>
+  <ul>
+     <li><a href="{{ url_for('job_search') }}"> Job Searching/Internships</a></li>
+     <li><a href="{{ url_for('delete_job') }}"> Delete a Job</a></li>
+     <li><a href="{{ url_for('find_contacts') }}"> Finding Contacts</a></li>
+     <li><a href="{{ url_for('skills', username=username) }}"> Learning New Skills</a></li>
+     <li><a href="{{ url_for('update_profile') }}"> Update Profile Information</a></li>
+     <li><a href="{{ url_for('search_profile') }}"> Search for Profile</a></li>
+     <li><a href="{{ url_for('index') }}"> Home Page</a></li>
+     <li><a href="{{ url_for('logout') }}"> Logout</a></li>
+  </ul> 
+</body>
+</html>
