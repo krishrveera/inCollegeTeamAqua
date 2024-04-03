@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 
 app = Flask('app')
 app.secret_key = 'secretKey'
@@ -185,16 +185,12 @@ def login():
 
 @app.route('/general->SignUp->login->post_menu/<username>',
            methods=['GET', 'POST'])
-
-
 def post_menu(username):
   return render_template('general->SignUp->login->post_menu.html',
                          username=username)
 
 
 @app.route('/job_search', methods=['GET', 'POST'])
-
-
 def job_search():
   if request.method == 'POST':
     username = request.form.get('username')
@@ -226,26 +222,27 @@ def job_search():
   else:
     return render_template('jobSearch.html', job_postings=job_postings)
 
+
 @app.route('/delete_job', methods=['GET', 'POST'])
 def delete_job():
-    username = session.get('username')
-    if not username:
-        return redirect(url_for('login'))
+  username = session.get('username')
+  if not username:
+    return redirect(url_for('login'))
 
-    if request.method == 'POST':
-        job_title = request.form.get('job_title')
+  if request.method == 'POST':
+    job_title = request.form.get('job_title')
 
-        # remove job from job_postings
-        if job_title and username in job_postings:
-            job_postings[username] = [job for job in job_postings[username] if job['title'] != job_title]
+    # remove job from job_postings
+    if job_title and username in job_postings:
+      job_postings[username] = [
+          job for job in job_postings[username] if job['title'] != job_title
+      ]
 
-    
+    return redirect(url_for('post_menu', username=username))
 
-        return redirect(url_for('post_menu', username=username))
-
-    # show the job if its a get request
-    jobs = job_postings.get(username, [])
-    return render_template('delete_job.html', jobs=jobs)
+  # show the job if its a get request
+  jobs = job_postings.get(username, [])
+  return render_template('delete_job.html', jobs=jobs)
 
 
 @app.route('/find_contacts')
@@ -269,14 +266,11 @@ def skills(username):
 
 
 @app.route('/logout')
-    
 def logout():
   return "logout"
 
 
 @app.route('/general->SignUp->SignUp', methods=['GET', 'POST'])
-
-
 def signup():
   error_message = None
   success_message = None
@@ -406,91 +400,105 @@ def profile_view(username):
 
   return render_template('profile_view.html', profile=profile)
 
+
 @app.route('/search_students', methods=['GET', 'POST'])
 def search_students():
-    if request.method == 'POST':
-        last_name = request.form['last_name']
-        university = request.form['university']
-        major = request.form['major']
+  if request.method == 'POST':
+    last_name = request.form['last_name']
+    university = request.form['university']
+    major = request.form['major']
 
-        results = []
-        for username, profile in accounts.items():
-            if (last_name == '' or profile['last_name'] == last_name) and \
-               (university == '' or profile['university'] == university) and \
-               (major == '' or profile['major'] == major):
-                results.append(username)
+    results = []
+    for username, profile in profiles.items():
+      if (last_name == '' or accounts[username]['last_name'] == last_name) and \
+         (university == '' or profile['university'] == university) and \
+         (major == '' or profile['major'] == major):
+        results.append({
+            'username':
+            username,
+            'name':
+            accounts[username]['first_name'] + ' ' +
+            accounts[username]['last_name']
+        })
 
-        return render_template('search_results.html', results=results)
+    return render_template('search_results.html', results=results)
 
-    return render_template('search_students.html')
+  return render_template('search_students.html')
 
 
-@app.route('/friend_requests')
+@app.route('/friend_requests', methods=['GET', 'POST'])
 def show_friend_requests():
-    username = session.get('username')
-    if not username:
-        return redirect(url_for('login'))
+  username = session.get('username')
+  if not username:
+    return redirect(url_for('login'))
 
-    pending_requests = friend_requests.get(username, [])
-    return render_template('friend_requests.html', requests=pending_requests)
+  pending_requests = friend_requests.get(username, [])
+  return render_template('friend_requests.html', requests=pending_requests)
+
 
 @app.route('/send_friend_request/<recipient>', methods=['POST'])
 def send_friend_request(recipient):
-    sender = session.get('username')
-    if not sender:
-        return redirect(url_for('login'))
+  sender = session.get('username')
+  if not sender:
+    flash("You must be logged in to send friend requests.", "warning")
+    return redirect(url_for('login'))
 
-    if recipient not in accounts:
-        return "Recipient not found."
+  if recipient not in accounts:
+    flash("Recipient not found.", "error")
+    return redirect(request.referrer)
 
-    if recipient in friend_requests.get(sender, []):
-        return "Friend request already sent."
+  if recipient in friend_requests.get(sender, []):
+    flash("Friend request already sent.", "info")  #will give notif
+    return redirect(request.referrer)
 
-    friend_requests.setdefault(recipient, []).append(sender)
-    return "Friend request sent successfully."
+  friend_requests.setdefault(recipient, []).append(sender)
+
+  flash("Friend request sent successfully.", "success")
+  return redirect(request.referrer)
 
 
-@app.route('/accept_friend_request/<sender>')
+@app.route('/accept_friend_request/<sender>', methods=['GET', 'POST'])
 def accept_friend_request(sender):
-    username = session.get('username')
-    if not username:
-        return redirect(url_for('login'))
+  username = session.get('username')
+  if not username:
+    return redirect(url_for('login'))
 
-    if sender in friend_requests.get(username, []):
-        # Accept friend request
-        friends.setdefault(username, []).append(sender)
-        friends.setdefault(sender, []).append(username)
+  if sender in friend_requests.get(username, []):
+    # Accept friend request
+    friends.setdefault(username, []).append(sender)
+    friends.setdefault(sender, []).append(username)
 
-        # Remove friend request
-        friend_requests[username].remove(sender)
+    # Remove friend request
+    friend_requests[username].remove(sender)
 
-        return "Friend request accepted successfully."
-    else:
-        return "No pending friend request from this user."
+    return "Friend request accepted successfully."
+  else:
+    return "No pending friend request from this user."
 
 
-@app.route('/my_network')
+@app.route('/my_network', methods=['GET', 'POST'])
 def show_network():
-    username = session.get('username')
-    if not username:
-        return redirect(url_for('login'))
+  username = session.get('username')
+  if not username:
+    return redirect(url_for('login'))
 
-    user_network = friends.get(username, [])
-    return render_template('my_network.html', network=user_network)
+  user_network = friends.get(username, [])
+  return render_template('my_network.html', network=user_network)
 
 
 @app.route('/disconnect/<friend>')
 def disconnect(friend):
-    username = session.get('username')
-    if not username:
-        return redirect(url_for('login'))
+  username = session.get('username')
+  if not username:
+    return redirect(url_for('login'))
 
-    if friend in friends.get(username, []):
-        friends[username].remove(friend)
-        friends[friend].remove(username)
-        return f"You are no longer connected with {friend}."
-    else:
-        return f"{friend} is not in your network."
+  if friend in friends.get(username, []):
+    friends[username].remove(friend)
+    friends[friend].remove(username)
+    return f"You are no longer connected with {friend}."
+  else:
+    return f"{friend} is not in your network."
+
 
 if __name__ == "__main__":
   app.run(debug=True, host='0.0.0.0', port=8080)
