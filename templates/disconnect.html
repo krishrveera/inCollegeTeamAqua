@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Disconnect</title>
+</head>
+<body>
+    <h1>Confirm Disconnection</h1>
+    <p>Are you sure you want to disconnect from {{ friend_name }}?</p>
+    <form action="{{ url_for('disconnect', friend=friend_name) }}" method="post">
+        <button type="submit">Yes, Disconnect</button>
+    </form>
+    <a href="{{ url_for('my_network') }}">Cancel</a>
+</body>
+</html>

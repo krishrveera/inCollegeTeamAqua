@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Students</title>
+</head>
+<body>
+    <h1>Search for Students</h1>
+    <form method="post">
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last_name" name="last_name"><br><br>
+        <label for="university">University:</label>
+        <input type="text" id="university" name="university"><br><br>
+        <label for="major">Major:</label>
+        <input type="text" id="major" name="major"><br><br>
+        <input type="submit" value="Search">
+    </form>
+    <a href="{{ url_for('index') }}">Return to Home</a>
+</body>
+</html>

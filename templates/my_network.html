@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Network</title>
+</head>
+<body>
+    <h1>My Network</h1>
+    {% if network %}
+        <ul>
+        {% for friend in network %}
+            <li>{{ friend }} <form action="{{ url_for('disconnect', friend=friend) }}" method="post"><button type="submit">Disconnect</button></form></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>You have no connections.</p>
+    {% endif %}
+    <a href="{{ url_for('index') }}">Return to Home</a>
+</body>
+</html>
